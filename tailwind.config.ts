@@ -7,6 +7,7 @@ const config: Config = {
 		"./components/**/*.{js,ts,jsx,tsx,mdx}",
 		"./app/**/*.{js,ts,jsx,tsx,mdx}",
 	],
+
 	theme: {
 		container: {
 			center: true,
@@ -18,25 +19,25 @@ const config: Config = {
 		extend: {
 			colors: {
 				primary: {
-					500: "#ff7000",
-					100: "#fff1e6",
+					500: "#FF7000",
+					100: "#FFF1E6",
 				},
 				dark: {
 					100: "#000000",
-					200: "#0f1117",
+					200: "#0F1117",
 					300: "#151821",
 					400: "#212734",
 					500: "#101012",
 				},
 				light: {
-					900: "#ffffff",
-					800: "#f4f6f8",
-					850: "#fdfdfd",
-					700: "#dce3f1",
-					500: "#7b8ec8",
-					400: "#858ead",
+					900: "#FFFFFF",
+					800: "#F4F6F8",
+					850: "#FDFDFD",
+					700: "#DCE3F1",
+					500: "#7B8EC8",
+					400: "#858EAD",
 				},
-				"accent-blue": "#1da1f2",
+				"accent-blue": "#1DA1F2",
 			},
 			fontFamily: {
 				inter: ["var(--font-inter)"],
