@@ -7,6 +7,7 @@ import { connectToDatabase } from "../mongoose";
 import {
 	CreateUserParams,
 	DeleteUserParams,
+	GetAllUsersParams,
 	UpdateUserParams,
 } from "./shared.types";
 
@@ -21,6 +22,19 @@ export async function getUserById(params: any) {
 		return user;
 	} catch (error) {
 		console.log("🔴 Error while getting user", error);
+		throw error;
+	}
+}
+
+export async function getAllUsers(params: GetAllUsersParams) {
+	try {
+		connectToDatabase();
+
+		const users = await User.find({});
+
+		return { users };
+	} catch (error) {
+		console.log("🔴 Error getting users", error);
 		throw error;
 	}
 }
