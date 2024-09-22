@@ -4,6 +4,7 @@ import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
 import Votes from "@/components/shared/Votes";
+import { viewQuestion } from "@/lib/actions/interaction.action";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { getFormattedNumber, getTimestamp } from "@/lib/utils";
@@ -30,6 +31,11 @@ export default async function QuestionDetailsPage({
 	const result = await getQuestionById({ questionId: params.id });
 
 	if (!result) return null;
+
+	await viewQuestion({
+		questionId: params.id,
+		userId: mongoUser._id,
+	});
 
 	return (
 		<>

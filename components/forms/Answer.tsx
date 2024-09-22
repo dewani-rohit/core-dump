@@ -6,8 +6,7 @@ import { QuestionId } from "@/lib/actions/shared.types";
 import { AnswerSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tinymce/tinymce-react";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -37,9 +36,9 @@ const Answer = ({
 	const editorRef = useRef(null);
 	const { mode } = useTheme();
 	const pathname = usePathname();
+	const router = useRouter();
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [isSubmittingAI, setIsSubmittingAI] = useState(false);
 
 	const form = useForm<z.infer<typeof AnswerSchema>>({
 		resolver: zodResolver(AnswerSchema),
@@ -78,21 +77,6 @@ const Answer = ({
 				<h4 className="paragraph-semibold text-dark400_light800">
 					Write your answer here
 				</h4>
-
-				<Button
-					onClick={() => {}}
-					className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
-				>
-					<Image
-						src="/assets/icons/stars.svg"
-						alt="stars icon"
-						width={12}
-						height={12}
-						className={`object-contain ${isSubmittingAI && "animate-pulse"}`}
-					/>
-
-					{isSubmittingAI ? "Generating..." : "Generate AI Answer"}
-				</Button>
 			</div>
 
 			<Form {...form}>
