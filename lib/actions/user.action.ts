@@ -1,5 +1,6 @@
 "use server";
 
+import Answer from "@/database/answer.model";
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import User from "@/database/user.model";
@@ -10,6 +11,8 @@ import {
 	DeleteUserParams,
 	GetAllUsersParams,
 	GetSavedQuestionParams,
+	GetUserByIdParams,
+	GetUserStatsParams,
 	ToggleSaveQuestionParams,
 	UpdateUserParams,
 } from "./shared.types";
@@ -153,6 +156,66 @@ export async function getSavedQuestions(params: GetSavedQuestionParams) {
 		return { questions: savedQuestions };
 	} catch (error) {
 		console.log("🔴 Error getting saved questions");
+		throw error;
+	}
+}
+
+export async function getUserInfo(params: GetUserByIdParams) {
+	try {
+		connectToDatabase();
+
+		const { userId } = params;
+
+		const user = await User.findOne({ clerkId: userId });
+
+		if (!user) throw new Error("User not found");
+
+		const totalQuestions = await Question.countDocuments({ author: user._id });
+		const totalAnswers = await Answer.countDocuments({ author: user._id });
+
+		return { user, totalQuestions, totalAnswers };
+	} catch (error) {
+		console.log("🔴 Error getting user information");
+		throw error;
+	}
+}
+
+export async function getUserQuestions(params: GetUserStatsParams) {
+	try {
+		connectToDatabase();
+
+		const { userId } = params;
+
+		const totalQuestions = await Question.countDocuments({ author: userId });
+
+		const userQuestions = await Question.find({ author: userId })
+			.sort({ views: -1, upVotes: -1 })
+			.populate("tags", "_id name")
+			.populate("author", "_id clerkId name picture");
+
+		return { totalQuestions, questions: userQuestions };
+	} catch (error) {
+		console.log("🔴 Error getting user questions");
+		throw error;
+	}
+}
+
+export async function getUserAnswers(params: GetUserStatsParams) {
+	try {
+		connectToDatabase();
+
+		const { userId } = params;
+
+		const totalAnswers = await Answer.countDocuments({ author: userId });
+
+		const userAnswers = await Answer.find({ author: userId })
+			.sort({ upVotes: -1 })
+			.populate("question", "_id title")
+			.populate("author", "_id clerkId name picture");
+
+		return { totalAnswers, answers: userAnswers };
+	} catch (error) {
+		console.log("🔴 Error getting user answers");
 		throw error;
 	}
 }

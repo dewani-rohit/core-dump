@@ -59,6 +59,7 @@ const Answer = ({
 
 			if (editorRef.current) {
 				const editor = editorRef.current as any;
+				console.log(editorRef.current);
 
 				editor.setContent("");
 			}
@@ -91,10 +92,10 @@ const Answer = ({
 								<FormControl className="mt-3.5">
 									<Editor
 										apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
-										onInit={(editor) =>
+										onInit={(evt, editor) => {
 											// @ts-ignore
-											(editorRef.current = editor)
-										}
+											editorRef.current = editor;
+										}}
 										onBlur={field.onBlur}
 										onEditorChange={(content) => field.onChange(content)}
 										init={{
