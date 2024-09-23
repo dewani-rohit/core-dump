@@ -5,7 +5,7 @@ import { UserFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.actions";
 import Link from "next/link";
 
-export default async function CommunityPage() {
+export default async function TagsPage() {
 	const result = await getAllTags({});
 
 	return (

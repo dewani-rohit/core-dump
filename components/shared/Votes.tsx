@@ -9,7 +9,7 @@ import { UserId, Voting } from "@/lib/actions/shared.types";
 import { toggleSaveQuestion } from "@/lib/actions/user.action";
 import { getFormattedNumber } from "@/lib/utils";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 interface VotesProps extends UserId, Voting {
 	type: string;
@@ -30,7 +30,6 @@ const Votes = ({
 	hasSaved,
 }: VotesProps) => {
 	const pathname = usePathname();
-	const router = useRouter();
 
 	const handleVote = async (action: string) => {
 		if (!userId) return;

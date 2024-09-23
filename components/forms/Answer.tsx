@@ -6,7 +6,7 @@ import { QuestionId } from "@/lib/actions/shared.types";
 import { AnswerSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tinymce/tinymce-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -36,7 +36,6 @@ const Answer = ({
 	const editorRef = useRef(null);
 	const { mode } = useTheme();
 	const pathname = usePathname();
-	const router = useRouter();
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
