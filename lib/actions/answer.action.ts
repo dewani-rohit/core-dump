@@ -3,10 +3,13 @@
 import Answer from "@/database/answer.model";
 import Question from "@/database/question.model";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { connectToDatabase } from "../mongoose";
 import {
 	AnswerVoteParams,
 	CreateAnswerParams,
+	DeleteAnswerParams,
+	EditAnswerParams,
 	GetAnswersParams,
 } from "./shared.types";
 
@@ -118,6 +121,54 @@ export async function downVoteAnswer(params: AnswerVoteParams) {
 		revalidatePath(path);
 	} catch (error) {
 		console.log("🔴 Failed to down vote", error);
+		throw error;
+	}
+}
+
+export async function editAnswer(params: EditAnswerParams) {
+	try {
+		connectToDatabase();
+
+		const { answerId, content, path } = params;
+
+		const answer = await Answer.findById(answerId);
+
+		if (!answer) throw new Error("Answer not found");
+
+		answer.content = content;
+
+		await answer.save();
+
+		redirect(path);
+	} catch (error) {
+		console.log("🔴 Failed to edit answer");
+		throw error;
+	}
+}
+
+export async function deleteAnswer(params: DeleteAnswerParams) {
+	try {
+		connectToDatabase();
+
+		const { answerId, path } = params;
+
+		const answer = await Answer.findById(answerId);
+
+		if (!answer) throw new Error("Answer not found");
+
+		await answer.deleteOne({ _id: answerId });
+
+		await Question.updateMany(
+			{ _id: answer.question },
+			{ $pull: { answers: answerId } }
+		);
+
+		// TODO delete all interactions
+		// TODO decrease author's reputation
+
+		revalidatePath(path);
+	} catch (error) {
+		console.log("🔴 Failed to delete answer");
 		throw error;
 	}
 }

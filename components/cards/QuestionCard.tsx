@@ -1,5 +1,7 @@
 import { getFormattedNumber, getTimestamp } from "@/lib/utils";
+import { SignedIn } from "@clerk/nextjs";
 import Link from "next/link";
+import EditDeleteAction from "../shared/EditDeleteAction";
 import Metric from "../shared/Metric";
 import RenderTag from "../shared/RenderTag";
 
@@ -10,13 +12,14 @@ interface QuestionProps {
 	author: {
 		_id: string;
 		name: string;
-		username: string;
 		picture: string;
+		clerkId: string;
 	};
 	upVotes: string[];
 	views: number;
 	answers: Array<object>;
 	createdAt: Date;
+	clerkId?: string | null;
 }
 
 const QuestionCard = ({
@@ -28,7 +31,10 @@ const QuestionCard = ({
 	views,
 	answers,
 	createdAt,
+	clerkId,
 }: QuestionProps) => {
+	const showActionButtons = clerkId && clerkId === author.clerkId;
+
 	return (
 		<div className="card-wrapper rounded-[10px] p-9 sm:px-11">
 			<div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -44,7 +50,14 @@ const QuestionCard = ({
 					</Link>
 				</div>
 
-				{/* //TODO - edit & delete buttons */}
+				<SignedIn>
+					{showActionButtons && (
+						<EditDeleteAction
+							type="question"
+							itemId={JSON.stringify(_id)}
+						/>
+					)}
+				</SignedIn>
 			</div>
 
 			<div className="mt-3.5 flex flex-wrap gap-2">
@@ -61,7 +74,7 @@ const QuestionCard = ({
 				<Metric
 					imgUrl={author.picture}
 					alt="profile picture"
-					value={author.name === "null" ? author.username : author.name}
+					value={author.name}
 					title={` • asked ${getTimestamp(createdAt)}`}
 					href={`/profile/${author._id}`}
 					isAuthor

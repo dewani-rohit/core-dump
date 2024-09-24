@@ -1,5 +1,6 @@
 import Answer from "@/components/forms/Answer";
 import AllAnswers from "@/components/shared/AllAnswers";
+import EditDeleteAction from "@/components/shared/EditDeleteAction";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
@@ -9,6 +10,7 @@ import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { getFormattedNumber, getTimestamp } from "@/lib/utils";
 import { URLProps } from "@/types";
+import { SignedIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,6 +33,8 @@ export default async function QuestionDetailsPage({
 	const result = await getQuestionById({ questionId: params.id });
 
 	if (!result) return null;
+
+	const showActionButtons = clerkId && clerkId === result?.author.clerkId;
 
 	await viewQuestion({
 		questionId: params.id,
@@ -113,7 +117,14 @@ export default async function QuestionDetailsPage({
 					))}
 				</div>
 
-				{/* //TODO delete action */}
+				<SignedIn>
+					{showActionButtons && (
+						<EditDeleteAction
+							type="question"
+							itemId={JSON.stringify(result._id)}
+						/>
+					)}
+				</SignedIn>
 			</div>
 
 			<AllAnswers

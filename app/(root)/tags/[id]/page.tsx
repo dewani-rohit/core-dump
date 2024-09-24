@@ -3,8 +3,10 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { getQuestionsByTagId } from "@/lib/actions/tag.actions";
 import { URLProps } from "@/types";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function TagPage({ params }: URLProps) {
+	const { userId: clerkId } = auth();
 	const result = await getQuestionsByTagId({ tagId: params.id });
 
 	return (
@@ -27,6 +29,7 @@ export default async function TagPage({ params }: URLProps) {
 						<QuestionCard
 							key={question._id}
 							_id={question._id}
+							clerkId={clerkId}
 							title={question.title}
 							tags={question.tags}
 							author={question.author}

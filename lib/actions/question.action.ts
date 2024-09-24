@@ -7,10 +7,14 @@ import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
 import {
 	CreateQuestionParams,
+	DeleteQuestionParams,
+	EditQuestionParams,
 	GetQuestionByIdParams,
 	GetQuestionsParams,
 	QuestionVoteParams,
 } from "./shared.types";
+import Answer from "@/database/answer.model";
+import { redirect } from "next/navigation";
 
 export async function createQuestion(params: CreateQuestionParams) {
 	try {
@@ -158,6 +162,59 @@ export async function downVoteQuestion(params: QuestionVoteParams) {
 		revalidatePath(path);
 	} catch (error) {
 		console.log("🔴 Failed to down vote", error);
+		throw error;
+	}
+}
+
+export async function editQuestion(params: EditQuestionParams) {
+	try {
+		connectToDatabase();
+
+		const { questionId, title, content, path } = params;
+
+		const question = await Question.findById(questionId).populate("tags");
+
+		if (!question) throw new Error("Question not found");
+
+		question.title = title;
+		question.content = content;
+
+		await question.save();
+
+		revalidatePath(path);
+	} catch (error) {
+		console.log("🔴 Failed to edit question", error);
+		throw error;
+	}
+}
+
+export async function deleteQuestion(params: DeleteQuestionParams) {
+	try {
+		connectToDatabase();
+
+		const { questionId, path, isQuestionPath = false } = params;
+
+		const question = await Question.findById({ _id: questionId });
+
+		if (!question) throw new Error("Question not found");
+
+		await Question.deleteOne({ _id: questionId });
+
+		await Answer.deleteMany({ question: questionId });
+
+		// TODO delete all interactions related to the question
+
+		await Tag.updateMany(
+			{ questions: questionId },
+			{ $pull: { questions: questionId } }
+		);
+
+		// TODO decrease author's reputation
+
+		if (isQuestionPath) redirect("/");
+		else revalidatePath(path);
+	} catch (error) {
+		console.log("🔴 Failed to delete question", error);
 		throw error;
 	}
 }

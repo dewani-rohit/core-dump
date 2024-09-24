@@ -15,6 +15,7 @@ const AnswersTab = async ({ userId, clerkId }: AnswersTabProps) => {
 				<AnswerCard
 					key={answer._id}
 					_id={answer._id}
+					clerkId={clerkId}
 					question={answer.question}
 					author={answer.author}
 					upVotes={answer.upVotes.length}

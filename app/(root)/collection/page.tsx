@@ -38,6 +38,7 @@ export default async function CollectionPage() {
 						<QuestionCard
 							key={question._id}
 							_id={question._id}
+							clerkId={clerkId}
 							title={question.title}
 							tags={question.tags}
 							author={question.author}

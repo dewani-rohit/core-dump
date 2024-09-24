@@ -6,9 +6,11 @@ import LocalSearch from "@/components/shared/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
+import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 
 export default async function HomePage() {
+	const { userId: clerkId } = auth();
 	const result = await getQuestions({});
 
 	return (
@@ -49,6 +51,7 @@ export default async function HomePage() {
 						<QuestionCard
 							key={question._id}
 							_id={question._id}
+							clerkId={clerkId}
 							title={question.title}
 							tags={question.tags}
 							author={question.author}
