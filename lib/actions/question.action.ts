@@ -1,9 +1,11 @@
 "use server";
 
+import Answer from "@/database/answer.model";
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import User from "@/database/user.model";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { connectToDatabase } from "../mongoose";
 import {
 	CreateQuestionParams,
@@ -13,8 +15,6 @@ import {
 	GetQuestionsParams,
 	QuestionVoteParams,
 } from "./shared.types";
-import Answer from "@/database/answer.model";
-import { redirect } from "next/navigation";
 
 export async function createQuestion(params: CreateQuestionParams) {
 	try {
@@ -215,6 +215,21 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
 		else revalidatePath(path);
 	} catch (error) {
 		console.log("🔴 Failed to delete question", error);
+		throw error;
+	}
+}
+
+export async function getHotQuestions() {
+	try {
+		connectToDatabase();
+
+		const hotQuestions = await Question.find({})
+			.sort({ views: -1, upVotes: -1 })
+			.limit(5);
+
+		return hotQuestions;
+	} catch (error) {
+		console.log("🔴 Failed to get popular questions", error);
 		throw error;
 	}
 }
