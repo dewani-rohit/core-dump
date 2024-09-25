@@ -10,6 +10,7 @@ import {
 	CreateAnswerParams,
 	DeleteAnswerParams,
 	EditAnswerParams,
+	GetAnswerByIdParams,
 	GetAnswersParams,
 } from "./shared.types";
 
@@ -169,6 +170,24 @@ export async function deleteAnswer(params: DeleteAnswerParams) {
 		revalidatePath(path);
 	} catch (error) {
 		console.log("🔴 Failed to delete answer");
+		throw error;
+	}
+}
+
+export async function getAnswerById(params: GetAnswerByIdParams) {
+	try {
+		connectToDatabase();
+
+		const { answerId } = params;
+
+		const answer = await Answer.findById(answerId).populate(
+			"author",
+			"_id clerkId name picture"
+		);
+
+		return answer;
+	} catch (error) {
+		console.log("🔴 Failed to get answer");
 		throw error;
 	}
 }

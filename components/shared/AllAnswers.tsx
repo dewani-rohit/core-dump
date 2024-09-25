@@ -49,6 +49,7 @@ const AllAnswers = async ({
 						<article
 							key={answer._id}
 							className="light-border border-b py-10"
+							id={JSON.stringify(answer._id)}
 						>
 							<div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
 								<Link

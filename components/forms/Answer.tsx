@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "@/context/ThemeProvider";
-import { createAnswer } from "@/lib/actions/answer.action";
+import { createAnswer, editAnswer } from "@/lib/actions/answer.action";
 import { QuestionId } from "@/lib/actions/shared.types";
 import { AnswerSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,21 +39,35 @@ const Answer = ({
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
+	const parsedAnswerData = answerData && JSON.parse(answerData);
+
 	const form = useForm<z.infer<typeof AnswerSchema>>({
 		resolver: zodResolver(AnswerSchema),
-		defaultValues: { answer: "" },
+		defaultValues: {
+			answer: parsedAnswerData?.content || "",
+		},
 	});
 
 	const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
 		setIsSubmitting(true);
 
 		try {
-			await createAnswer({
-				content: values.answer,
-				author: JSON.parse(authorId),
-				question: JSON.parse(questionId),
-				path: pathname,
-			});
+			if (type === "edit") {
+				await editAnswer({
+					answerId: parsedAnswerData._id,
+					content: values.answer,
+					path: `/question/${JSON.parse(questionId)}/#${JSON.stringify(
+						parsedAnswerData._id
+					)}`,
+				});
+			} else {
+				await createAnswer({
+					content: values.answer,
+					author: JSON.parse(authorId),
+					question: JSON.parse(questionId),
+					path: pathname,
+				});
+			}
 
 			form.reset();
 
@@ -98,6 +112,7 @@ const Answer = ({
 										}}
 										onBlur={field.onBlur}
 										onEditorChange={(content) => field.onChange(content)}
+										initialValue={parsedAnswerData?.content || ""}
 										init={{
 											height: 350,
 											menubar: false,
