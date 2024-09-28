@@ -5,9 +5,12 @@ import { getQuestionsByTagId } from "@/lib/actions/tag.actions";
 import { URLProps } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 
-export default async function TagPage({ params }: URLProps) {
+export default async function TagPage({ params, searchParams }: URLProps) {
 	const { userId: clerkId } = auth();
-	const result = await getQuestionsByTagId({ tagId: params.id });
+	const result = await getQuestionsByTagId({
+		tagId: params.id,
+		searchQuery: searchParams.q,
+	});
 
 	return (
 		<>

@@ -4,9 +4,12 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { UserFilters } from "@/constants/filters";
 import { getAllUsers } from "@/lib/actions/user.action";
+import { SearchParamsProps } from "@/types";
 
-export default async function CommunityPage() {
-	const result = await getAllUsers({});
+export default async function CommunityPage({
+	searchParams,
+}: SearchParamsProps) {
+	const result = await getAllUsers({ searchQuery: searchParams.q });
 
 	return (
 		<>

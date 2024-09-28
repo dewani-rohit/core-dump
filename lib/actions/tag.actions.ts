@@ -3,6 +3,7 @@
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import User from "@/database/user.model";
+import { FilterQuery } from "mongoose";
 import { connectToDatabase } from "../mongoose";
 import {
 	GetAllTagsParams,
@@ -44,7 +45,15 @@ export async function getAllTags(params: GetAllTagsParams) {
 	try {
 		connectToDatabase();
 
-		const tags = await Tag.find({});
+		const { searchQuery } = params;
+
+		const query: FilterQuery<typeof Tag> = {};
+
+		if (searchQuery) {
+			query.$or = [{ name: { $regex: new RegExp(searchQuery, "i") } }];
+		}
+
+		const tags = await Tag.find(query);
 
 		return { tags };
 	} catch (error) {
@@ -57,11 +66,16 @@ export async function getQuestionsByTagId(params: GetQuestionByTagIdParams) {
 	try {
 		connectToDatabase();
 
-		const { tagId } = params;
+		const { tagId, searchQuery } = params;
 
-		const tag = await Tag.findOne({ _id: tagId }).populate({
+		const tagFilter: FilterQuery<typeof Tag> = { _id: tagId };
+
+		const tag = await Tag.findOne(tagFilter).populate({
 			path: "questions",
 			model: Question,
+			match: searchQuery
+				? { title: { $regex: searchQuery, $options: "i" } }
+				: {},
 			options: { sort: { createdAt: -1 } },
 			populate: [
 				{ path: "tags", model: Tag, select: "_id name" },

@@ -4,6 +4,7 @@ import Answer from "@/database/answer.model";
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import User from "@/database/user.model";
+import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { connectToDatabase } from "../mongoose";
@@ -55,7 +56,20 @@ export async function getQuestions(params: GetQuestionsParams) {
 	try {
 		connectToDatabase();
 
-		const questions = await Question.find({})
+		const { searchQuery } = params;
+
+		const query: FilterQuery<typeof Question> = {};
+
+		if (searchQuery) {
+			query.$or = [
+				{
+					title: { $regex: new RegExp(searchQuery, "i") },
+					content: { $regex: new RegExp(searchQuery, "i") },
+				},
+			];
+		}
+
+		const questions = await Question.find(query)
 			.populate({
 				path: "tags",
 				model: Tag,

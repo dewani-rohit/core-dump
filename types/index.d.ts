@@ -29,3 +29,18 @@ export interface BadgeCounts {
 export interface ParamsProps {
 	params: { id: string };
 }
+
+export interface UrlQueryParams {
+	params: string;
+	key: string;
+	value: string | null;
+}
+
+export interface RemoveQueryParams {
+	params: string;
+	keysToRemove: string[];
+}
+
+export interface SearchParamsProps {
+	searchParams: { [key: string]: string | undefined };
+}
