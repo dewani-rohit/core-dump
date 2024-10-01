@@ -8,9 +8,14 @@ import { usePathname, useRouter } from "next/navigation";
 interface EditDeleteActionProps {
 	type: string;
 	itemId: string;
+	authorId: string;
 }
 
-const EditDeleteAction = ({ type, itemId }: EditDeleteActionProps) => {
+const EditDeleteAction = ({
+	type,
+	itemId,
+	authorId,
+}: EditDeleteActionProps) => {
 	const router = useRouter();
 	const pathname = usePathname();
 
@@ -32,6 +37,7 @@ const EditDeleteAction = ({ type, itemId }: EditDeleteActionProps) => {
 			await deleteAnswer({
 				answerId: JSON.parse(itemId),
 				path: pathname,
+				author: JSON.parse(authorId),
 			});
 	};
 

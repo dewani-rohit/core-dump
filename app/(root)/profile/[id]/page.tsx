@@ -13,9 +13,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function ProfilePage({ params, searchParams }: URLProps) {
-	const { user, totalAnswers, totalQuestions } = await getUserInfo({
-		userId: params.id,
-	});
+	const { user, totalAnswers, totalQuestions, badgeCounts, reputation } =
+		await getUserInfo({
+			userId: params.id,
+		});
 
 	const { userId: clerkId } = auth();
 	return (
@@ -83,6 +84,8 @@ export default async function ProfilePage({ params, searchParams }: URLProps) {
 			<Stats
 				totalAnswers={totalAnswers}
 				totalQuestions={totalQuestions}
+				badges={badgeCounts}
+				reputation={reputation}
 			/>
 
 			<div className="mt-10 flex gap-10">

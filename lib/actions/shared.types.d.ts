@@ -140,7 +140,9 @@ export interface GetAnswerByIdParams extends AnswerId {}
 
 export interface AnswerVoteParams extends AnswerId, UserId, Path, Voting {}
 
-export interface DeleteAnswerParams extends Path, AnswerId {}
+export interface DeleteAnswerParams extends Path, AnswerId {
+	author: string;
+}
 
 export interface EditAnswerParams extends Path, AnswerId, Content {}
 

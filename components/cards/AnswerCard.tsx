@@ -52,6 +52,7 @@ const AnswerCard = ({
 						<EditDeleteAction
 							type="answer"
 							itemId={JSON.stringify(_id)}
+							authorId={JSON.stringify(author._id)}
 						/>
 					)}
 				</SignedIn>

@@ -1,7 +1,9 @@
 "use server";
 
 import Answer from "@/database/answer.model";
+import Interaction from "@/database/interaction.model";
 import Question from "@/database/question.model";
+import User from "@/database/user.model";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { connectToDatabase } from "../mongoose";
@@ -26,13 +28,19 @@ export async function createAnswer(params: CreateAnswerParams) {
 			question,
 		});
 
-		await Question.findByIdAndUpdate(question, {
+		const questionObj = await Question.findByIdAndUpdate(question, {
 			$push: { answers: newAnswer._id },
 		});
 
-		// TODO create interaction record for user's create answer action
+		await Interaction.create({
+			user: author,
+			action: "answer",
+			question,
+			answer: newAnswer._id,
+			tags: questionObj.tag,
+		});
 
-		// TODO author's reputation +5 for creating answer
+		await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } });
 
 		revalidatePath(path);
 	} catch (error) {
@@ -178,7 +186,7 @@ export async function deleteAnswer(params: DeleteAnswerParams) {
 	try {
 		connectToDatabase();
 
-		const { answerId, path } = params;
+		const { answerId, path, author } = params;
 
 		const answer = await Answer.findById(answerId);
 
@@ -191,8 +199,9 @@ export async function deleteAnswer(params: DeleteAnswerParams) {
 			{ $pull: { answers: answerId } }
 		);
 
-		// TODO delete all interactions
-		// TODO decrease author's reputation
+		await Interaction.deleteMany({ answer: answerId });
+
+		await User.findByIdAndUpdate(author, { $inc: { reputation: -10 } });
 
 		revalidatePath(path);
 	} catch (error) {

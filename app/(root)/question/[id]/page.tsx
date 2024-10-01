@@ -122,6 +122,7 @@ export default async function QuestionDetailsPage({
 						<EditDeleteAction
 							type="question"
 							itemId={JSON.stringify(result._id)}
+							authorId={JSON.stringify(mongoUser._id)}
 						/>
 					)}
 				</SignedIn>

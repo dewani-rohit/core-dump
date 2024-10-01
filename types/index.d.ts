@@ -1,3 +1,5 @@
+import { BADGE_CRITERIA } from "@/constants";
+
 export interface ThemeOption {
 	label: string;
 	value: string;
@@ -44,3 +46,12 @@ export interface RemoveQueryParams {
 export interface SearchParamsProps {
 	searchParams: { [key: string]: string | undefined };
 }
+
+export interface BadgeParams {
+	criteria: {
+		type: keyof typeof BADGE_CRITERIA;
+		count: number;
+	}[];
+}
+
+export type BadgeCriteriaType = keyof typeof BADGE_CRITERIA;

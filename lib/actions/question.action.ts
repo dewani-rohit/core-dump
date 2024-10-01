@@ -1,6 +1,7 @@
 "use server";
 
 import Answer from "@/database/answer.model";
+import Interaction from "@/database/interaction.model";
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import User from "@/database/user.model";
@@ -30,8 +31,15 @@ export async function createQuestion(params: CreateQuestionParams) {
 		});
 
 		const tagDocuments = [];
+		let newTagsCounter = 0;
 
 		for (const tag of tags) {
+			const tagAlreadyExists = await Tag.exists({
+				name: { $regex: new RegExp(`^${tag}$`, "i") },
+			});
+
+			if (!tagAlreadyExists) newTagsCounter++;
+
 			const existingTag = await Tag.findOneAndUpdate(
 				{ name: { $regex: new RegExp(`^${tag}$`, "i") } },
 				{ $setOnInsert: { name: tag }, $push: { questions: question._id } },
@@ -44,6 +52,21 @@ export async function createQuestion(params: CreateQuestionParams) {
 		await Question.findByIdAndUpdate(question._id, {
 			$push: { tags: { $each: tagDocuments } },
 		});
+
+		await Interaction.create({
+			user: author,
+			action: "ask_question",
+			question: question._id,
+			tags: tagDocuments,
+		});
+
+		await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } });
+
+		if (newTagsCounter > 0) {
+			await User.findByIdAndUpdate(author, {
+				$inc: { reputation: newTagsCounter * 3 },
+			});
+		}
 
 		revalidatePath(path);
 	} catch (error) {
@@ -240,14 +263,16 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
 
 		await Answer.deleteMany({ question: questionId });
 
-		// TODO delete all interactions related to the question
+		await Interaction.deleteMany({ question: questionId });
 
 		await Tag.updateMany(
 			{ questions: questionId },
 			{ $pull: { questions: questionId } }
 		);
 
-		// TODO decrease author's reputation
+		await User.findByIdAndUpdate(question.author, {
+			$inc: { reputation: -5 },
+		});
 
 		if (isQuestionPath) redirect("/");
 		else revalidatePath(path);

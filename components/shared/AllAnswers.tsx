@@ -12,9 +12,9 @@ import Image from "next/image";
 import Link from "next/link";
 import EditDeleteAction from "./EditDeleteAction";
 import Filter from "./Filter";
+import Pagination from "./Pagination";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
-import Pagination from "./Pagination";
 
 interface AllAnswersProps
 	extends QuestionId,
@@ -97,6 +97,7 @@ const AllAnswers = async ({
 									<EditDeleteAction
 										type="answer"
 										itemId={JSON.stringify(answer._id)}
+										authorId={JSON.stringify(userId)}
 									/>
 								)}
 							</SignedIn>
