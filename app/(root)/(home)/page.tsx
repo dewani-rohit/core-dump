@@ -15,6 +15,7 @@ export default async function HomePage({ searchParams }: SearchParamsProps) {
 
 	const result = await getQuestions({
 		searchQuery: searchParams.q,
+		filter: searchParams.filter,
 	});
 
 	return (
@@ -47,7 +48,7 @@ export default async function HomePage({ searchParams }: SearchParamsProps) {
 				/>
 			</div>
 
-			<HomeFilters />
+			<HomeFilters filters={HomePageFilters} />
 
 			<div className="mt-10 flex w-full flex-col gap-6">
 				{result.questions.length > 0 ? (

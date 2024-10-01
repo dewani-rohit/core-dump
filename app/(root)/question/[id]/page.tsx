@@ -131,6 +131,7 @@ export default async function QuestionDetailsPage({
 				questionId={result._id}
 				userId={mongoUser._id}
 				totalAnswers={result.answers.length}
+				filter={searchParams?.filter}
 			/>
 
 			<Answer
