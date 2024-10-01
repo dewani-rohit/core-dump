@@ -111,6 +111,7 @@ export default async function ProfilePage({ params, searchParams }: URLProps) {
 						className="mt-5 flex w-full flex-col gap-6"
 					>
 						<QuestionsTab
+							searchParams={searchParams}
 							userId={user._id}
 							clerkId={clerkId}
 						/>

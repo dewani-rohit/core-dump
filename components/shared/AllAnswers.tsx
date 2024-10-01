@@ -14,6 +14,7 @@ import EditDeleteAction from "./EditDeleteAction";
 import Filter from "./Filter";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
+import Pagination from "./Pagination";
 
 interface AllAnswersProps
 	extends QuestionId,
@@ -30,7 +31,7 @@ const AllAnswers = async ({
 	page,
 	filter,
 }: AllAnswersProps) => {
-	const result = await getAnswers({ questionId, sortBy: filter });
+	const result = await getAnswers({ questionId, sortBy: filter, page });
 
 	return (
 		<div className="mt-11">
@@ -102,6 +103,13 @@ const AllAnswers = async ({
 						</article>
 					);
 				})}
+			</div>
+
+			<div className="mt-10 w-full">
+				<Pagination
+					pageNumber={page ? +page : 1}
+					isNext={result.isNext}
+				/>
 			</div>
 		</div>
 	);
