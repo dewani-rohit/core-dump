@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/context/ThemeProvider";
+import { toast } from "@/hooks/use-toast";
 import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { QuestionsSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -108,8 +109,19 @@ const Question = ({ mongoUserId, type, questionDetails }: QuestionProps) => {
 				router.push("/");
 			}
 		} catch (error) {
+			toast({
+				title: `Error ${type === "edit" ? "editing" : "posting"} question`,
+				variant: "destructive",
+			});
+
+			console.error(error);
 		} finally {
 			setIsSubmitting(false);
+
+			toast({
+				title: `Question ${type === "edit" ? "edited" : "posted"} successfully`,
+				variant: "success",
+			});
 		}
 	};
 

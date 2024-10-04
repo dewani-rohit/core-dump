@@ -37,6 +37,20 @@ const config: Config = {
 					500: "#7B8EC8",
 					400: "#858EAD",
 				},
+				background: "hsl(var(--background))",
+				foreground: "hsl(var(--foreground))",
+				muted: {
+					DEFAULT: "hsl(var(--muted))",
+					foreground: "hsl(var(--muted-foreground))",
+				},
+				success: {
+					DEFAULT: "hsl(var(--success))",
+					foreground: "hsl(var(--success-foreground))",
+				},
+				destructive: {
+					DEFAULT: "hsl(var(--destructive))",
+					foreground: "hsl(var(--destructive-foreground))",
+				},
 				"accent-blue": "#1DA1F2",
 			},
 			fontFamily: {

@@ -1,6 +1,7 @@
 import LeftSidebar from "@/components/shared/LeftSidebar";
 import Navbar from "@/components/shared/navbar/Navbar";
 import RightSidebar from "@/components/shared/RightSidebar";
+import { Toaster } from "@/components/ui/toaster";
 import { ReactNode } from "react";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -15,8 +16,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
 				<RightSidebar />
 			</div>
-			{/* //TODO */}
-			Toaster
+
+			<Toaster />
 		</main>
 	);
 }

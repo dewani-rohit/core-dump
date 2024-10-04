@@ -19,6 +19,7 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { toast } from "@/hooks/use-toast";
 
 interface ProfileProps extends ClerkId {
 	user: string;
@@ -59,9 +60,19 @@ const Profile = ({ user, clerkId }: ProfileProps) => {
 
 			router.back();
 		} catch (error) {
+			toast({
+				title: "Error updating profile",
+				variant: "destructive",
+			});
+
 			console.log(error);
 		} finally {
 			setIsSubmitting(false);
+
+			toast({
+				title: "Profile updated successfully",
+				variant: "success",
+			});
 		}
 	}
 

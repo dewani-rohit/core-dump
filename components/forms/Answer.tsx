@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/context/ThemeProvider";
+import { toast } from "@/hooks/use-toast";
 import { createAnswer, editAnswer } from "@/lib/actions/answer.action";
 import { QuestionId } from "@/lib/actions/shared.types";
 import { AnswerSchema } from "@/lib/validations";
@@ -78,10 +79,22 @@ const Answer = ({
 				editor.setContent("");
 			}
 		} catch (error) {
-			console.log(error);
+			toast({
+				title: `Error ${type === "edit" ? "editing" : "submitting"} answer`,
+				variant: "destructive",
+			});
+
+			console.error(error);
 			throw error;
 		} finally {
 			setIsSubmitting(false);
+
+			toast({
+				title: `Answer ${
+					type === "edit" ? "edited" : "submitted"
+				} successfully`,
+				variant: "success",
+			});
 		}
 	};
 

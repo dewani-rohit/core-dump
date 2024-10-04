@@ -9,6 +9,36 @@ body {
 	font-family: "Inter", sans-serif;
 }
 
+@layer base {
+	:root {
+		--background: 0 0% 100%;
+		--foreground: 222.2 84% 4.9%;
+
+		--muted: 217.2 32.6% 37.5%;
+		--muted-foreground: 215 20.2% 65.1%;
+
+		--success: 130 74.2% 45.2%;
+		--success-foreground: 210 40% 98%;
+
+		--destructive: 0 84.2% 60.2%;
+		--destructive-foreground: 210 40% 98%;
+	}
+
+	.dark {
+		--background: 222.2 84% 4.9%;
+		--foreground: 210 40% 98%;
+
+		--muted: 217.2 32.6% 17.5%;
+		--muted-foreground: 215 20.2% 65.1%;
+
+		--success: 130 62.8% 30.6%;
+		--success-foreground: 210 40% 98%;
+
+		--destructive: 0 62.8% 30.6%;
+		--destructive-foreground: 210 40% 98%;
+	}
+}
+
 @layer utilities {
 	.flex-center {
 		@apply flex justify-center items-center;
