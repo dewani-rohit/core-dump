@@ -6,7 +6,10 @@ import Pagination from "@/components/shared/Pagination";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
-import { getQuestions } from "@/lib/actions/question.action";
+import {
+	getQuestions,
+	getRecommendedQuestions,
+} from "@/lib/actions/question.action";
 import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
@@ -14,11 +17,32 @@ import Link from "next/link";
 export default async function HomePage({ searchParams }: SearchParamsProps) {
 	const { userId: clerkId } = auth();
 
-	const result = await getQuestions({
-		searchQuery: searchParams.q,
-		filter: searchParams.filter,
-		page: searchParams.page ? +searchParams.page : 1,
-	});
+	const homePageFilters = HomePageFilters.filter(
+		(filter) => !(clerkId === null && filter.value === "recommended")
+	);
+
+	let result;
+
+	if (searchParams?.filter === "recommended") {
+		if (clerkId) {
+			result = await getRecommendedQuestions({
+				userId: clerkId,
+				searchQuery: searchParams.q,
+				page: searchParams.page ? +searchParams.page : 1,
+			});
+		} else {
+			result = {
+				questions: [],
+				isNext: false,
+			};
+		}
+	} else {
+		result = await getQuestions({
+			searchQuery: searchParams.q,
+			filter: searchParams.filter,
+			page: searchParams.page ? +searchParams.page : 1,
+		});
+	}
 
 	return (
 		<>
@@ -44,13 +68,13 @@ export default async function HomePage({ searchParams }: SearchParamsProps) {
 				/>
 
 				<Filter
-					filters={HomePageFilters}
+					filters={homePageFilters}
 					otherClasses="min-h-[56px] sm:min-w-[170px]"
 					containerClasses="hidden max-md:flex"
 				/>
 			</div>
 
-			<HomeFilters filters={HomePageFilters} />
+			<HomeFilters filters={homePageFilters} />
 
 			<div className="mt-10 flex w-full flex-col gap-6">
 				{result.questions.length > 0 ? (
