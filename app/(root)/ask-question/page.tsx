@@ -10,6 +10,8 @@ export default async function AskQuestionPage() {
 
 	const mongoUser = await getUserById({ userId });
 
+	if (!mongoUser?.onboard) redirect("/onboarding");
+
 	return (
 		<div className="">
 			<h1 className="h1-bold text-dark100_light900">Ask a question</h1>

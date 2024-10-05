@@ -1,10 +1,11 @@
 "use client";
 
+import { toast } from "@/hooks/use-toast";
 import { ClerkId } from "@/lib/actions/shared.types";
 import { updateUser } from "@/lib/actions/user.action";
 import { ProfileValidation } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,14 +20,13 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { toast } from "@/hooks/use-toast";
 
 interface ProfileProps extends ClerkId {
 	user: string;
 }
 
 const Profile = ({ user, clerkId }: ProfileProps) => {
-	const router = useRouter();
+	// const router = useRouter();
 	const pathname = usePathname();
 	const parsedUser = JSON.parse(user);
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,11 +54,12 @@ const Profile = ({ user, clerkId }: ProfileProps) => {
 					portfolioWebsite: values.portfolioWebsite,
 					location: values.location,
 					bio: values.bio,
+					onboard: true,
 				},
 				path: pathname,
 			});
 
-			router.back();
+			// router.back();
 		} catch (error) {
 			toast({
 				title: "Error updating profile",

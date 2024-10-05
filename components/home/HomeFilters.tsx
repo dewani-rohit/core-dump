@@ -18,6 +18,8 @@ const HomeFilters = ({ filters }: HomeFiltersProps) => {
 
 	const handleClick = (item: string) => {
 		if (active === item) {
+			setActive("");
+
 			const newUrl = formUrlQuery({
 				params: searchParams.toString(),
 				key: "filter",

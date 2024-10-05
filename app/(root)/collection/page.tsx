@@ -4,9 +4,10 @@ import NoResult from "@/components/shared/NoResult";
 import Pagination from "@/components/shared/Pagination";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { QuestionFilters } from "@/constants/filters";
-import { getSavedQuestions } from "@/lib/actions/user.action";
+import { getSavedQuestions, getUserById } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function CollectionPage({
 	searchParams,
@@ -14,6 +15,10 @@ export default async function CollectionPage({
 	const { userId: clerkId } = auth();
 
 	if (!clerkId) return null;
+
+	const mongoUser = await getUserById({ userId: clerkId });
+
+	if (!mongoUser?.onboard) redirect("/onboarding");
 
 	const result = await getSavedQuestions({
 		clerkId,

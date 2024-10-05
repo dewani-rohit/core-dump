@@ -15,6 +15,8 @@ const GlobalFilters = () => {
 
 	const handleClick = (item: string) => {
 		if (active === item) {
+			setActive("");
+
 			const newUrl = formUrlQuery({
 				params: searchParams.toString(),
 				key: "type",
@@ -46,7 +48,7 @@ const GlobalFilters = () => {
 						type="button"
 						className={`light-border-2 small-medium rounded-3xl px-5 py-2 capitalize dark:text-light-800 dark:hover:text-primary-500 ${
 							active === filter.value
-								? "bg-primary-500 text-light-900 dark:hover:text-dark-400"
+								? "bg-primary-500 text-light-900 hover:dark:text-dark-400"
 								: "bg-light-700 text-dark-400 hover:text-primary-500 dark:bg-dark-500"
 						}`}
 						onClick={() => handleClick(filter.value)}

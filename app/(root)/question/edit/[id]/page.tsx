@@ -3,6 +3,7 @@ import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { ParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function EditQuestionPage({ params }: ParamsProps) {
 	const { userId } = auth();
@@ -10,6 +11,8 @@ export default async function EditQuestionPage({ params }: ParamsProps) {
 	if (!userId) return null;
 
 	const mongoUser = await getUserById({ userId });
+
+	if (!mongoUser?.onboard) redirect("/onboarding");
 
 	const result = await getQuestionById({ questionId: params.id });
 
