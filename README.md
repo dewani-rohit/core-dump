@@ -9,9 +9,9 @@
 - [Usage](#usage)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
-- [Project Structure](#project-structure)
 - [Contributing](#contributing)
 - [License](#license)
+- [References](#references)
 
 ## Live Demo
 
