@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CoreDump
 
-## Getting Started
+**CoreDump** is a platform where developers can ask questions, share knowledge, and engage in technical discussions. Whether you're debugging code, seeking advice on best practices, or exploring new technologies, CoreDump connects you with a community of experts ready to help. Join now to collaborate, learn, and grow in your programming journey.
 
-First, run the development server:
+## Table of Contents
+
+- [Live Demo](#live-demo)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Live Demo
+
+Check out the live application here: [CoreDump](https://core-dump.vercel.app/)
+
+## Installation
+
+To get a local copy up and running, follow these steps:
+
+1. **Clone the repository**:
+
+```bash
+git clone https://github.com/dewani-rohit/core-dump.git
+cd core-dump
+```
+
+2. **Install dependencies**:
+
+```bash
+   npm install
+```
+
+3. **Set up environment variables**:
+   Create a `.env.local` file in the root directory and add the following variables:
+
+```bash
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=
+
+NEXT_PUBLIC_TINY_EDITOR_API_KEY=
+
+MONGODB_URL=
+
+WEBHOOK_SECRET=
+```
+
+4. **Run the development server**:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will be available at `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Start the development server with `npm run dev`.
+- Build for production with `npm run build`.
+- Run ESLint checks with `npm run lint`.
 
-## Learn More
+## Features
 
-To learn more about Next.js, take a look at the following resources:
+CoreDump is packed with features that help developers engage with technical content and community discussions effectively:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Next.js Server Actions**: CoreDump utilizes Next.js Server Actions for enhanced performance by handling server-side operations efficiently. This results in faster load times and more responsive user interactions.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **Question and Answer System**: Users can view a variety of questions posted by others. Only logged-in users have the ability to ask new questions, submit answers, bookmark content, and upvote/downvote posts. This promotes engagement and fosters a collaborative environment while ensuring the quality of contributions.
 
-## Deploy on Vercel
+- **User Reputation and Badges**: Users earn reputation points and badges by participating in activities such as posting questions, answering questions, and receiving upvotes from the community. This encourages meaningful contributions and recognizes active members.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Advanced Search and Filtering**: The platform features a global search bar that allows users to search across all content, including questions, answers, and tags. Individual pages also support filtering to help users find exactly what they need quickly. Pagination is also built-in for seamless navigation through large amounts of data.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Light and Dark Mode**: Users can switch between light and dark themes, allowing them to customize the user interface based on their preferences or environmental lighting conditions.
+
+## Technologies Used
+
+- **Next.js 14** — React framework for server-side rendering and static site generation
+- **TypeScript** — Strongly-typed JavaScript
+- **TailwindCSS** — Utility-first CSS framework
+- **MongoDB & Mongoose** — NoSQL database and ODM for data modeling
+- **Clerk** — Authentication and user management
+- **Shadcn UI** — UI components and library
+- **ESLint & Prettier** — Code quality and formatting
+- **Prism.js** — Syntax highlighting for code blocks
+- **Zod** — Schema validation for TypeScript
+- **React Hook Form** — Form handling in React
+- **Vercel** — Deployment and hosting
+
+## Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature-branch`.
+3. Commit your changes: `git commit -m 'Add new feature'`.
+4. Push to the branch: `git push origin feature-branch`.
+5. Submit a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## References
+
+- JSMastery. (2023). [_Ultimate Next.js 14 Course | Become a top 1% Next.js 14 developer_](https://www.jsmastery.pro/ultimate-next-course). E-Learning.
