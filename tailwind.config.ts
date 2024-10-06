@@ -51,6 +51,8 @@ const config: Config = {
 					DEFAULT: "hsl(var(--destructive))",
 					foreground: "hsl(var(--destructive-foreground))",
 				},
+				input: "hsl(var(--input))",
+				ring: "hsl(var(--ring))",
 				"accent-blue": "#1DA1F2",
 			},
 			fontFamily: {

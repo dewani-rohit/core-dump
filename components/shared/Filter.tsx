@@ -16,23 +16,26 @@ interface ComponentFilterProps {
 	filters: FilterProps[];
 	otherClasses?: string;
 	containerClasses?: string;
+	jobFilter?: boolean;
 }
 
 const Filter = ({
 	filters,
 	otherClasses,
 	containerClasses,
+	jobFilter = false,
 }: ComponentFilterProps) => {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
-	const paramFilter = searchParams.get("filter");
+	const searchParamKey = jobFilter ? "location" : "filter";
+	const paramFilter = searchParams.get(searchParamKey);
 
 	const handleUpdateParams = (value: string) => {
 		const newUrl = formUrlQuery({
 			params: searchParams.toString(),
-			key: "filter",
-			value,
+			key: searchParamKey,
+			value: jobFilter ? value.toLowerCase() : value,
 		});
 
 		router.push(newUrl, { scroll: false });
